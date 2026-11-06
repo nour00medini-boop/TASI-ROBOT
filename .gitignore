@@ -1,0 +1,7 @@
+venv_tasi/
+TACO/
+dataset/
+runs/
+check/*
+*.pt
+__pycache__/
