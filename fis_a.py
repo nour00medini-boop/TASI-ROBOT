@@ -1,6 +1,6 @@
 """FIS-A : controleur flou de decision de collecte (Mamdani, scikit-fuzzy).
 
-Entrees  : conf [0,1], dist [0,5] m, batt [0,100] %, bac [0,100] %
+Entrees  : conf [0,1], dist [0,5] m, batnt [0,100] %, bac [0,100] %
 Sortie   : score [0,100]  (score > SEUIL_COLLECTE => on collecte)
 
 Methode (cours TASI, partie 1, chapitre 2) :
