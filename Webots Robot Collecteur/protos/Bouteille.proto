@@ -1,0 +1,38 @@
+#VRML_SIM R2025a utf8
+# Bouteille - classe YOLO "bouteille"
+# Forme : cylindre haut (bouteille plastique / verre), vert sombre.
+
+PROTO Bouteille [
+  field SFVec3f    translation  0 0 0
+  field SFRotation rotation     0 1 0 0
+  field SFString   name         "bouteille"
+  field SFString   model        "bouteille"
+]
+{
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    name IS name
+    model IS model
+    children [
+      Shape {
+        geometry Cylinder {
+          height 0.25
+          radius 0.040
+          subdivision 24
+        }
+        appearance PBRAppearance {
+          baseColor 0.10 0.35 0.12
+          roughness 0.35
+          metalness 0.05
+        }
+        recognitionColors [ 0.10 0.35 0.12 ]
+      }
+    ]
+    boundingObject Cylinder {
+      height 0.25
+      radius 0.040
+    }
+    physics Physics {}
+  }
+}

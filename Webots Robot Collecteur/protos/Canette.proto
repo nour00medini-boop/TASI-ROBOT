@@ -1,0 +1,38 @@
+#VRML_SIM R2025a utf8
+# Canette - classe YOLO "canette"
+# Forme : cylindre court (canette de soda), rouge sombre.
+
+PROTO Canette [
+  field SFVec3f    translation  0 0 0
+  field SFRotation rotation     0 1 0 0
+  field SFString   name         "canette"
+  field SFString   model        "canette"
+]
+{
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    name IS name
+    model IS model
+    children [
+      Shape {
+        geometry Cylinder {
+          height 0.12
+          radius 0.033
+          subdivision 24
+        }
+        appearance PBRAppearance {
+          baseColor 0.70 0.06 0.06
+          roughness 0.55
+          metalness 0.20
+        }
+        recognitionColors [ 0.70 0.06 0.06 ]
+      }
+    ]
+    boundingObject Cylinder {
+      height 0.12
+      radius 0.033
+    }
+    physics Physics {}
+  }
+}

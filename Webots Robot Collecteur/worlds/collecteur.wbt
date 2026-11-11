@@ -1,0 +1,51 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3dx.proto"
+EXTERNPROTO "../protos/Bouteille.proto"
+EXTERNPROTO "../protos/Canette.proto"
+EXTERNPROTO "../protos/PaperCup.proto"
+EXTERNPROTO "../protos/Tissues.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.1914817659626955 0.4478454549179516 -0.8733665792856632 1.222260037231781
+  position -0.8218573498132586 2.106134508956561 1.4382444113448545
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 5 5
+}
+Bouteille {
+  translation 0 0.18 0
+}
+Canette {
+}
+PaperCup {
+  translation 0 0.4 0
+}
+Tissues {
+  translation 0 -0.2 0
+}
+Pioneer3dx {
+  translation 0.8626453919949579 0.014059772515127009 0.09481500104743265
+  rotation -0.017035009799845558 -0.13052813091536894 -0.9912982474920751 0.2639058580601639
+  controller "Collecteur2"
+  extensionSlot [
+    Lidar {
+      maxRange 5
+    }
+    Camera {
+      width 480
+      height 640
+      recognition Recognition {
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+#VRML_SIM R2025a utf8
+# PaperCup - classe YOLO "paper_cup"
+# Forme : godet en carton, blanc.
+
+PROTO PaperCup [
+  field SFVec3f    translation  0 0 0
+  field SFRotation rotation     0 1 0 0
+  field SFString   name         "paper_cup"
+  field SFString   model        "paper_cup"
+]
+{
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    name IS name
+    model IS model
+    children [
+      Shape {
+        geometry Cylinder {
+          height 0.12
+          radius 0.040
+          subdivision 24
+        }
+        appearance PBRAppearance {
+          baseColor 0.95 0.95 0.92
+          roughness 0.80
+          metalness 0.00
+        }
+        recognitionColors [ 0.95 0.95 0.92 ]
+      }
+    ]
+    boundingObject Cylinder {
+      height 0.12
+      radius 0.040
+    }
+    physics Physics {}
+  }
+}

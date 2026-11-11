@@ -1,0 +1,32 @@
+#VRML_SIM R2025a utf8
+# AutreObjet - classe YOLO "autre_objet" (leurre, ne doit JAMAIS etre collecte)
+# Forme : petite boite grise generique.
+
+PROTO AutreObjet [
+  field SFVec3f    translation  0 0 0
+  field SFRotation rotation     0 1 0 0
+  field SFString   name         "autre_objet"
+  field SFString   model        "autre_objet"
+]
+{
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    name IS name
+    model IS model
+    children [
+      Shape {
+        geometry Box {
+          size 0.10 0.10 0.15
+        }
+        appearance PBRAppearance {
+          baseColor 0.50 0.50 0.50
+          roughness 0.70
+          metalness 0.10
+        }
+        recognitionColors [ 0.50 0.50 0.50 ]
+      }
+    ]
+    boundingObject Box {
+      size 0.10 0.10 0.15
+   
