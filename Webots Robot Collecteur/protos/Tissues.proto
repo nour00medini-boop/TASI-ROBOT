@@ -1,6 +1,6 @@
 #VRML_SIM R2025a utf8
 # Tissues - classe YOLO "tissues"
-# Forme : petite boite rectangulaire beige.
+# recognitionColors sur le Solid
 
 PROTO Tissues [
   field SFVec3f    translation  0 0 0
@@ -14,6 +14,7 @@ PROTO Tissues [
     rotation IS rotation
     name IS name
     model IS model
+    recognitionColors [ 0.88 0.82 0.68 ]
     children [
       Shape {
         geometry Box {
@@ -24,7 +25,6 @@ PROTO Tissues [
           roughness 0.90
           metalness 0.00
         }
-        recognitionColors [ 0.88 0.82 0.68 ]
       }
     ]
     boundingObject Box {

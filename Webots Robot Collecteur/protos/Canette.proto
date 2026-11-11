@@ -1,6 +1,7 @@
 #VRML_SIM R2025a utf8
 # Canette - classe YOLO "canette"
-# Forme : cylindre court (canette de soda), rouge sombre.
+# recognitionColors sur le Solid (PAS sur le Shape) - convention Webots
+# metalness 0 : le rendu reste proche de baseColor, le Recognition matche
 
 PROTO Canette [
   field SFVec3f    translation  0 0 0
@@ -14,6 +15,7 @@ PROTO Canette [
     rotation IS rotation
     name IS name
     model IS model
+    recognitionColors [ 1 0 0 ]
     children [
       Shape {
         geometry Cylinder {
@@ -23,10 +25,9 @@ PROTO Canette [
         }
         appearance PBRAppearance {
           baseColor 0.70 0.06 0.06
-          roughness 0.55
-          metalness 0.20
+          roughness 0.70
+          metalness 0.00
         }
-        recognitionColors [ 0.70 0.06 0.06 ]
       }
     ]
     boundingObject Cylinder {

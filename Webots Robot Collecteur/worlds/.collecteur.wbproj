@@ -7,4 +7,4 @@ centralWidgetVisible: 1
 orthographicViewHeight: 1
 textFiles: -1
 consoles: Console:All:All
-renderingDevicePerspectives: Pioneer 3-DX:camera;1;0.671875;0;0
+renderingDevicePerspectives: Pioneer 3-DX:camera;0;0.671875;0.0272059;0.0464135;273;155;327;430;0

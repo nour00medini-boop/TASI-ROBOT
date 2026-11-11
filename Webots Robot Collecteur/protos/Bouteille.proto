@@ -1,6 +1,6 @@
 #VRML_SIM R2025a utf8
 # Bouteille - classe YOLO "bouteille"
-# Forme : cylindre haut (bouteille plastique / verre), vert sombre.
+# recognitionColors sur le Solid - metalness 0 pour un match stable
 
 PROTO Bouteille [
   field SFVec3f    translation  0 0 0
@@ -14,6 +14,7 @@ PROTO Bouteille [
     rotation IS rotation
     name IS name
     model IS model
+    recognitionColors [ 0.10 0.35 0.12 ]
     children [
       Shape {
         geometry Cylinder {
@@ -23,10 +24,9 @@ PROTO Bouteille [
         }
         appearance PBRAppearance {
           baseColor 0.10 0.35 0.12
-          roughness 0.35
-          metalness 0.05
+          roughness 0.70
+          metalness 0.00
         }
-        recognitionColors [ 0.10 0.35 0.12 ]
       }
     ]
     boundingObject Cylinder {
