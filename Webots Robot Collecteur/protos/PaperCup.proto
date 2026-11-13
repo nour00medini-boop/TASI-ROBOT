@@ -1,38 +1,61 @@
 #VRML_SIM R2025a utf8
-# PaperCup - classe YOLO "paper_cup"
-# recognitionColors sur le Solid
-
 PROTO PaperCup [
-  field SFVec3f    translation  0 0 0
-  field SFRotation rotation     0 1 0 0
-  field SFString   name         "paper_cup"
-  field SFString   model        "paper_cup"
+  field SFVec3f    translation 0 0 0
+  field SFRotation rotation    0 0 1 0
+  field SFString   name        "paper_cup"
+  field SFString   model       "paper_cup"
+  field SFString   texture     ""
+  field SFColor    color       0.95 0.93 0.88
+  field SFFloat    mass        0.01
 ]
 {
+%<
+  const P = [
+    [0.000,0.000],[0.0250,0.000],[0.0265,0.004],[0.0400,0.092],
+    [0.0415,0.093],[0.0420,0.0955],[0.0410,0.0975],[0.0395,0.0975],  // bord roulé
+    [0.0390,0.0950],[0.0250,0.006],[0.000,0.006]                     // paroi intérieure + fond
+  ];
+  const H = 0.0975, N = 36, coord = [], tex = [], idx = [];
+  for (let j = 0; j < P.length; j++)
+    for (let i = 0; i <= N; i++) {
+      const a = 2*Math.PI*i/N;
+      coord.push(`${(P[j][0]*Math.cos(a)).toFixed(5)} ${(P[j][0]*Math.sin(a)).toFixed(5)} ${P[j][1]}`);
+      tex.push(`${(i/N).toFixed(4)} ${(P[j][1]/H).toFixed(4)}`);
+    }
+  for (let j = 0; j < P.length-1; j++)
+    for (let i = 0; i < N; i++) { const a=j*(N+1)+i, d=a+N+1; idx.push(`${a} ${a+1} ${d+1} ${d} -1`); }
+  const hasTex = fields.texture.value !== '';
+>%
   Solid {
     translation IS translation
     rotation IS rotation
     name IS name
     model IS model
-    recognitionColors [ 0.95 0.95 0.92 ]
+    recognitionColors [ 0 0 1 ]
     children [
       Shape {
-        geometry Cylinder {
-          height 0.12
-          radius 0.040
-          subdivision 24
-        }
         appearance PBRAppearance {
-          baseColor 0.95 0.95 0.92
-          roughness 0.90
-          metalness 0.00
+          baseColor IS color
+%< if (hasTex) { >%
+          baseColorMap ImageTexture { url [ "%<= fields.texture.value >%" ] }
+%< } >%
+          roughness 0.75
+          metalness 0
+        }
+        geometry IndexedFaceSet {
+          coord Coordinate { point [ %<= coord.join(', ') >% ] }
+          texCoord TextureCoordinate { point [ %<= tex.join(', ') >% ] }
+          coordIndex [ %<= idx.join(' ') >% ]
+          texCoordIndex [ %<= idx.join(' ') >% ]
+          creaseAngle 0.8
         }
       }
     ]
-    boundingObject Cylinder {
-      height 0.12
-      radius 0.040
+    boundingObject Transform {
+      translation 0 0 0.0485
+      rotation 0 0 1 1.5708
+      children [ Cylinder { height 0.097 radius 0.034 } ]
     }
-    physics Physics {}
+    physics Physics { density -1 mass IS mass }
   }
 }

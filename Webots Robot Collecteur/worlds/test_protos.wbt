@@ -1,0 +1,74 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "../protos/Canette.proto"
+EXTERNPROTO "../protos/Bouteille.proto"
+EXTERNPROTO "../protos/PaperCup.proto"
+EXTERNPROTO "../protos/Tissues.proto"
+EXTERNPROTO "../protos/AutreObjet.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3dx.proto"
+
+Background {
+  skyColor [
+    0.65 0.8 1
+  ]
+}
+DirectionalLight {
+  direction -0.5 -0.3 -1
+  intensity 1.5
+}
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.015014228272916057 0.15128856560385254 0.9883756081909839 1.0397776603715625
+  position -1.1913809822176968 -2.5297216418295534 0.8329622004750215
+}
+RectangleArena {
+  floorSize 4 4
+}
+Canette {
+  translation 0.8 -0.3 -5.887212355691618e-06
+  rotation 0.112583947641536 -0.13109626367077554 -0.9849561535342628 9.507159938992413e-17
+}
+Bouteille {
+  translation 0.8 -0.15 -7.84921169758035e-06
+  rotation 0.23519318537910155 -0.7985316374482792 -0.5541041324023868 6.129579638754894e-17
+}
+PaperCup {
+  translation 0.8 -6.6692890979257904e-18 -3.925213013962481e-06
+  rotation -0.06751403910518693 0.9908982839012953 0.11645791293498049 1.3419348012114575e-16
+}
+Tissues {
+  translation 0.8 0.15 -7.849211697594227e-06
+}
+AutreObjet {
+  translation 0.8 0.3 -1.9621207752215652e-05
+  rotation 0.2615647634000802 0.8500854810502617 0.4570979648335846 1.0938957826807985e-16
+  shape "cylinder"
+  color 0.9 0.1 0.1
+}
+Pioneer3dx {
+  hidden position_0_0 3.6924271056944794e-07
+  hidden position_0_1 1.6335082751138257e-11
+  hidden position_0_2 1.635293913280894e-11
+  hidden rotation_1 0.5773504113112155 -0.577350198128824 -0.5773501981288115 2.094394786817635
+  hidden position_1_0 -0.03723370563878081
+  hidden rotation_2 -1 0 0 0.037233705638781416
+  translation -0.0033758276840061066 2.419115578857969e-09 0.0948145913695391
+  rotation -7.20204491444922e-07 -0.9999999999997404 1.9184438502331217e-08 0.034622829965898244
+  controller "Check Recognition"
+  extensionSlot [
+    Camera {
+      translation 0.2 0 0.3
+      rotation 0 1 0 0.35
+      fieldOfView 1
+      width 640
+      height 480
+      recognition Recognition {
+        maxRange 5
+      }
+    }
+    Lidar {
+    }
+  ]
+}

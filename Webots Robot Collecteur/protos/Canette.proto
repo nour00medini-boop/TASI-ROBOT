@@ -1,15 +1,37 @@
 #VRML_SIM R2025a utf8
-# Canette - classe YOLO "canette"
-# recognitionColors sur le Solid (PAS sur le Shape) - convention Webots
-# metalness 0 : le rendu reste proche de baseColor, le Recognition matche
-
 PROTO Canette [
-  field SFVec3f    translation  0 0 0
-  field SFRotation rotation     0 1 0 0
-  field SFString   name         "canette"
-  field SFString   model        "canette"
+  field SFVec3f    translation 0 0 0
+  field SFRotation rotation    0 0 1 0
+  field SFString   name        "canette"
+  field SFString   model       "canette"
+  field SFString   texture     ""            # image dépliée de la canette (optionnel)
+  field SFColor    color       0.75 0.75 0.78
+  field SFFloat    mass        0.015
 ]
 {
+%<
+  // Profil (r, z) en mètres, canette 33 cl : fond -> paroi -> col -> bord -> couvercle
+  const P = [
+    [0.000,0.006],[0.022,0.006],[0.026,0.000],[0.030,0.000],[0.033,0.006],
+    [0.033,0.100],[0.0315,0.108],[0.0275,0.115],[0.0265,0.118],
+    [0.0275,0.119],[0.0275,0.121],[0.0255,0.121],[0.0255,0.1195],
+    [0.0235,0.1175],[0.000,0.1175]
+  ];
+  const H = 0.122, N = 36;
+  const coord = [], tex = [], idx = [];
+  for (let j = 0; j < P.length; j++)
+    for (let i = 0; i <= N; i++) {
+      const a = 2 * Math.PI * i / N;
+      coord.push(`${(P[j][0]*Math.cos(a)).toFixed(5)} ${(P[j][0]*Math.sin(a)).toFixed(5)} ${P[j][1]}`);
+      tex.push(`${(i/N).toFixed(4)} ${(P[j][1]/H).toFixed(4)}`);
+    }
+  for (let j = 0; j < P.length - 1; j++)
+    for (let i = 0; i < N; i++) {
+      const a = j*(N+1)+i, d = a+N+1;
+      idx.push(`${a} ${a+1} ${d+1} ${d} -1`);
+    }
+  const hasTex = fields.texture.value !== '';
+>%
   Solid {
     translation IS translation
     rotation IS rotation
@@ -18,22 +40,29 @@ PROTO Canette [
     recognitionColors [ 1 0 0 ]
     children [
       Shape {
-        geometry Cylinder {
-          height 0.12
-          radius 0.033
-          subdivision 24
-        }
         appearance PBRAppearance {
-          baseColor 0.70 0.06 0.06
-          roughness 0.70
-          metalness 0.00
+          baseColor IS color
+%< if (hasTex) { >%
+          baseColorMap ImageTexture { url [ "%<= fields.texture.value >%" ] }
+%< } >%
+          roughness 0.35
+          metalness 0.0
+        }
+        geometry IndexedFaceSet {
+          coord Coordinate { point [ %<= coord.join(', ') >% ] }
+          texCoord TextureCoordinate { point [ %<= tex.join(', ') >% ] }
+          coordIndex [ %<= idx.join(' ') >% ]
+          texCoordIndex [ %<= idx.join(' ') >% ]
+          creaseAngle 0.8
         }
       }
     ]
-    boundingObject Cylinder {
-      height 0.12
-      radius 0.033
+    # Cylinder est aligné sur Y dans Webots : on le tourne pour qu'il soit debout (axe Z)
+    boundingObject Transform {
+      translation 0 0 0.061
+      rotation 0 0 1 1.5708
+      children [ Cylinder { height 0.122 radius 0.033 } ]
     }
-    physics Physics {}
+    physics Physics { density -1 mass IS mass }
   }
 }

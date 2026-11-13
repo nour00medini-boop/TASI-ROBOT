@@ -1,35 +1,63 @@
 #VRML_SIM R2025a utf8
-# AutreObjet - classe YOLO "autre_objet" (leurre, ne doit JAMAIS etre collecte)
-# Forme : petite boite grise generique.
-
 PROTO AutreObjet [
-  field SFVec3f    translation  0 0 0
-  field SFRotation rotation     0 1 0 0
-  field SFString   name         "autre_objet"
-  field SFString   model        "autre_objet"
+  field SFVec3f    translation 0 0 0
+  field SFRotation rotation    0 0 1 0
+  field SFString   name        "autre_objet"
+  field SFString   model       "autre_objet"
+  field SFString{"box", "cylinder", "sphere", "cone"} shape "box"
+  field SFVec3f    size        0.07 0.07 0.10     # x,y = diamètre/largeur ; z = hauteur
+  field SFString   texture     ""
+  field SFColor    color       0.6 0.3 0.2
+  field SFFloat    roughness   0.5
+  field SFFloat    metalness   0.0
+  field SFFloat    mass        0.05
 ]
 {
+%<
+  const sh = fields.shape.value, w = fields.size.value;
+  const h = (sh === 'sphere') ? w.x : w.z;
+  let geo = '';
+  if (sh === 'box')           geo = `Box { size ${w.x} ${w.y} ${w.z} }`;
+  else if (sh === 'cylinder') geo = `Cylinder { radius ${w.x/2} height ${w.z} }`;
+  else if (sh === 'sphere')   geo = `Sphere { radius ${w.x/2} subdivision 3 }`;
+  else                        geo = `Cone { bottomRadius ${w.x/2} height ${w.z} }`;
+  // Cylinder et Cone sont alignés sur Y : on les couche sur Z
+  const rot = (sh === 'cylinder' || sh === 'cone') ? '1 0 0 1.5708' : '0 0 1 0';
+  const hasTex = fields.texture.value !== '';
+    // Dimensions de la boîte de collision (indépendantes de la forme visuelle)
+  const bx = w.x;
+  const by = (sh === 'box') ? w.y : w.x;   // cylindre, sphère, cône : diamètre = w.x
+  const bz = h;
+>%
   Solid {
     translation IS translation
     rotation IS rotation
     name IS name
     model IS model
+    recognitionColors [ 1 0 1 ]
     children [
-      Shape {
-        geometry Box {
-          size 0.10 0.10 0.15
-        }
-        appearance PBRAppearance {
-          baseColor 0.50 0.50 0.50
-          roughness 0.70
-          metalness 0.10
-        }
-        
+      Transform {
+        translation 0 0 %<= h/2 >%
+        rotation %<= rot >%
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor IS color
+%< if (hasTex) { >%
+              baseColorMap ImageTexture { url [ "%<= fields.texture.value >%" ] }
+%< } >%
+              roughness IS roughness
+              metalness IS metalness
+            }
+            geometry %<= geo >%
+          }
+        ]
       }
     ]
-    boundingObject Box {
-      size 0.10 0.10 0.15
+    boundingObject Transform {
+      translation 0 0 %<= h/2 >%
+      children [ Box { size %<= bx >% %<= by >% %<= bz >% } ]
     }
-    physics Physics {}
+    physics Physics { density -1 mass IS mass }
   }
 }

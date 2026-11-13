@@ -1,35 +1,73 @@
 #VRML_SIM R2025a utf8
-# Tissues - classe YOLO "tissues"
-# recognitionColors sur le Solid
-
 PROTO Tissues [
-  field SFVec3f    translation  0 0 0
-  field SFRotation rotation     0 1 0 0
-  field SFString   name         "tissues"
-  field SFString   model        "tissues"
+  field SFVec3f    translation 0 0 0
+  field SFRotation rotation    0 0 1 0
+  field SFString   name        "tissues"
+  field SFString   model       "tissues"
+  field SFString   texture     ""
+  field SFColor    color       0.96 0.96 0.94
+  field SFFloat    radius      0.035
+  field SFFloat    roughness   0.9
+  field SFInt32    seed        1
+  field SFFloat    mass        0.005
 ]
 {
+%<
+  const R = fields.radius.value, AMP = 0.28, NL = 24, NP = 16;
+  let s = (fields.seed.value * 2654435761) % 4294967296;
+  const rnd = () => { s = (s*1664525 + 1013904223) % 4294967296; return s/4294967296; };
+  const ph = []; for (let k = 0; k < 8; k++) ph.push(rnd()*2*Math.PI);
+  const rad = (th, p) => R*(1 + AMP*(
+      Math.sin(p)*(0.5*Math.sin(2*th+ph[0])*Math.cos(3*p+ph[1])
+                 + 0.3*Math.sin(5*th+ph[2])*Math.sin(4*p+ph[3])
+                 + 0.2*Math.cos(9*th+ph[4])*Math.sin(7*p+ph[5]))
+      + 0.3*Math.cos(3*p+ph[6])));
+  const off = 0.9*R, coord = [], tex = [], idx = [];
+  for (let j = 0; j <= NP; j++) {
+    const p = Math.PI*j/NP;
+    for (let i = 0; i <= NL; i++) {
+      const th = 2*Math.PI*i/NL, r = rad(th, p);
+      coord.push(`${(r*Math.sin(p)*Math.cos(th)).toFixed(5)} ${(r*Math.sin(p)*Math.sin(th)).toFixed(5)} ${(r*Math.cos(p)+off).toFixed(5)}`);
+      tex.push(`${(i/NL).toFixed(4)} ${(1-j/NP).toFixed(4)}`);
+    }
+  }
+  for (let j = 0; j < NP; j++)
+    for (let i = 0; i < NL; i++) {
+      const a = j*(NL+1)+i, d = a+NL+1;
+      if (j < NP-1) idx.push(`${a} ${d} ${d+1} -1`);
+      if (j > 0)    idx.push(`${a} ${d+1} ${a+1} -1`);
+    }
+  const hasTex = fields.texture.value !== '';
+>%
   Solid {
     translation IS translation
     rotation IS rotation
     name IS name
     model IS model
-    recognitionColors [ 0.88 0.82 0.68 ]
+    recognitionColors [ 1 1 0 ]
     children [
       Shape {
-        geometry Box {
-          size 0.12 0.06 0.08
-        }
         appearance PBRAppearance {
-          baseColor 0.88 0.82 0.68
-          roughness 0.90
-          metalness 0.00
+          baseColor IS color
+%< if (hasTex) { >%
+          baseColorMap ImageTexture { url [ "%<= fields.texture.value >%" ] }
+%< } >%
+          roughness IS roughness
+          metalness 0
+        }
+        geometry IndexedFaceSet {
+          coord Coordinate { point [ %<= coord.join(', ') >% ] }
+          texCoord TextureCoordinate { point [ %<= tex.join(', ') >% ] }
+          coordIndex [ %<= idx.join(' ') >% ]
+          texCoordIndex [ %<= idx.join(' ') >% ]
+          creaseAngle 0.6
         }
       }
     ]
-    boundingObject Box {
-      size 0.12 0.06 0.08
+    boundingObject Transform {
+      translation 0 0 %<= off >%
+      children [ Sphere { radius %<= 0.9*R >% } ]
     }
-    physics Physics {}
+    physics Physics { density -1 mass IS mass }
   }
 }

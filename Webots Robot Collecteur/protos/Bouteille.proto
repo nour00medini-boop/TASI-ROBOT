@@ -1,38 +1,106 @@
 #VRML_SIM R2025a utf8
-# Bouteille - classe YOLO "bouteille"
-# recognitionColors sur le Solid - metalness 0 pour un match stable
-
 PROTO Bouteille [
-  field SFVec3f    translation  0 0 0
-  field SFRotation rotation     0 1 0 0
-  field SFString   name         "bouteille"
-  field SFString   model        "bouteille"
+  field SFVec3f    translation 0 0 0
+  field SFRotation rotation    0 0 1 0
+  field SFString   name        "bouteille"
+  field SFString   model       "bouteille"
+  field SFString   texture     ""                 # étiquette dépliée (optionnel)
+  field SFColor    bodyColor   0.80 0.90 0.95     # teinte du PET (vert/bleu pâle possible)
+  field SFColor    labelColor  0.10 0.35 0.80     # utilisée si pas de texture
+  field SFColor    capColor    0.10 0.35 0.80
+  field SFFloat    transparency 0.7               # 0 = opaque, 1 = invisible
+  field SFFloat    mass        0.02
 ]
 {
+%<
+  // Génère un solide de révolution (profil r,z) -> chaînes pour IndexedFaceSet
+  function lathe(P, N) {
+    const zs = P.map(p => p[1]);
+    const z0 = Math.min(...zs), z1 = Math.max(...zs), dz = (z1 - z0) || 1;
+    const coord = [], tex = [], idx = [];
+    for (let j = 0; j < P.length; j++)
+      for (let i = 0; i <= N; i++) {
+        const a = 2 * Math.PI * i / N;
+        coord.push(`${(P[j][0]*Math.cos(a)).toFixed(5)} ${(P[j][0]*Math.sin(a)).toFixed(5)} ${P[j][1]}`);
+        tex.push(`${(i/N).toFixed(4)} ${((P[j][1]-z0)/dz).toFixed(4)}`);
+      }
+    for (let j = 0; j < P.length - 1; j++)
+      for (let i = 0; i < N; i++) {
+        const a = j*(N+1)+i, d = a+N+1;
+        idx.push(`${a} ${a+1} ${d+1} ${d} -1`);
+      }
+    return { c: coord.join(', '), t: tex.join(', '), i: idx.join(' ') };
+  }
+
+  // Corps : fond -> paroi -> nervures -> épaule -> goulot
+  const body = lathe([
+    [0.000,0.004],[0.020,0.004],[0.026,0.000],[0.030,0.000],[0.032,0.006],
+    [0.032,0.118],[0.0305,0.122],[0.0305,0.126],[0.032,0.130],[0.032,0.134],
+    [0.0305,0.147],[0.0255,0.159],[0.018,0.168],[0.0135,0.174],[0.0135,0.180],[0.000,0.180]
+  ], 36);
+  // Étiquette : simple bande (pas de couvercle), un peu plus large que le corps
+  const label = lathe([[0.0323,0.040],[0.0323,0.112]], 36);
+  // Bouchon
+  const cap = lathe([
+    [0.000,0.176],[0.0158,0.176],[0.0160,0.1775],[0.0160,0.1925],[0.0152,0.1945],[0.000,0.1945]
+  ], 24);
+  const hasTex = fields.texture.value !== '';
+>%
   Solid {
     translation IS translation
     rotation IS rotation
     name IS name
     model IS model
-    recognitionColors [ 0.10 0.35 0.12 ]
+    recognitionColors [ 0 1 0 ]
     children [
+      # --- Corps PET ---
       Shape {
-        geometry Cylinder {
-          height 0.25
-          radius 0.040
-          subdivision 24
-        }
         appearance PBRAppearance {
-          baseColor 0.10 0.35 0.12
-          roughness 0.70
-          metalness 0.00
+          baseColor IS bodyColor
+          transparency IS transparency
+          roughness 0.08
+          metalness 0
+        }
+        geometry IndexedFaceSet {
+          coord Coordinate { point [ %<= body.c >% ] }
+          coordIndex [ %<= body.i >% ]
+          creaseAngle 0.8
+        }
+      }
+      # --- Étiquette ---
+      Shape {
+        appearance PBRAppearance {
+%< if (hasTex) { >%
+          baseColorMap ImageTexture { url [ "%<= fields.texture.value >%" ] }
+%< } else { >%
+          baseColor IS labelColor
+%< } >%
+          roughness 0.5
+          metalness 0
+        }
+        geometry IndexedFaceSet {
+          coord Coordinate { point [ %<= label.c >% ] }
+          texCoord TextureCoordinate { point [ %<= label.t >% ] }
+          coordIndex [ %<= label.i >% ]
+          texCoordIndex [ %<= label.i >% ]
+          creaseAngle 0.8
+        }
+      }
+      # --- Bouchon ---
+      Shape {
+        appearance PBRAppearance { baseColor IS capColor roughness 0.4 metalness 0 }
+        geometry IndexedFaceSet {
+          coord Coordinate { point [ %<= cap.c >% ] }
+          coordIndex [ %<= cap.i >% ]
+          creaseAngle 0.8
         }
       }
     ]
-    boundingObject Cylinder {
-      height 0.25
-      radius 0.040
+    boundingObject Transform {
+      translation 0 0 0.0975
+      rotation 0 0 1 1.5708
+      children [ Cylinder { height 0.195 radius 0.032 } ]
     }
-    physics Physics {}
+    physics Physics { density -1 mass IS mass }
   }
 }
