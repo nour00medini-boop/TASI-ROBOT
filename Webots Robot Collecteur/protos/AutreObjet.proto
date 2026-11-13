@@ -1,6 +1,6 @@
 #VRML_SIM R2025a utf8
 # AutreObjet - classe YOLO "autre_objet" (leurre, ne doit JAMAIS etre collecte)
-# recognitionColors sur le Solid
+# Forme : petite boite grise generique.
 
 PROTO AutreObjet [
   field SFVec3f    translation  0 0 0
@@ -14,7 +14,6 @@ PROTO AutreObjet [
     rotation IS rotation
     name IS name
     model IS model
-    recognitionColors [ 0.50 0.50 0.50 ]
     children [
       Shape {
         geometry Box {
@@ -22,9 +21,10 @@ PROTO AutreObjet [
         }
         appearance PBRAppearance {
           baseColor 0.50 0.50 0.50
-          roughness 0.80
-          metalness 0.00
+          roughness 0.70
+          metalness 0.10
         }
+        
       }
     ]
     boundingObject Box {
