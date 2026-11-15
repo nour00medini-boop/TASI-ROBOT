@@ -1,0 +1,12 @@
+train:
+  - C:/Users/nourmedini/Desktop/TASI-ROBOT/dataset/images/train
+  - C:/Users/nourmedini/Desktop/TASI-ROBOT/Webots Robot Collecteur/dataset_webots/images/train
+val:
+  - C:/Users/nourmedini/Desktop/TASI-ROBOT/dataset/images/val
+  - C:/Users/nourmedini/Desktop/TASI-ROBOT/Webots Robot Collecteur/dataset_webots/images/val
+names:
+  0: bouteille
+  1: canette
+  2: paper_cup
+  3: tissues
+  4: autre_objet
