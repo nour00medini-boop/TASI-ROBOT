@@ -1,0 +1,4 @@
+train: C:\Users\nourmedini\Desktop\TASI-ROBOT\dataset\images\train 
+val:   C:\Users\nourmedini\Desktop\TASI-ROBOT\dataset\images\val
+test:  C:\Users\nourmedini\Desktop\TASI-ROBOT\dataset\images\test
+names: {0: canette, 1: bouteille, 2: paper_cup, 3: tissues, 4: autre_objet}

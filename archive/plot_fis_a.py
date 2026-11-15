@@ -2,7 +2,7 @@
 import itertools
 import time
 import numpy as np
-from fis_a import score_collecte, SEUIL_COLLECTE
+from archive.fis_a import score_collecte, SEUIL_COLLECTE
 
 # ---------------------------------------------------------------- 1) COUVERTURE
 # On balaie une grille d'entrees. Si aucune regle ne s'active en un point,

@@ -2,7 +2,7 @@
 Cree deux images PNG dans le dossier courant."""
 import numpy as np
 import matplotlib.pyplot as plt
-from fis_a import _VARS, score_collecte
+from archive.fis_a import _VARS, score_collecte
 
 # ------------------------------------------------ 1) fonctions d'appartenance
 titres = {"conf": "conf (confiance YOLO)", "dist": "dist (m)",
