@@ -1,0 +1,6 @@
+import glob, collections
+c = collections.Counter()
+for f in glob.glob("dataset_webots/labels/*/*.txt"):
+    for l in open(f):
+        if l.strip(): c[int(l.split()[0])] += 1
+print(c)   # 0 canette, 1 bouteille, 2 paper_cup, 3 tissues, 4 autre_objet

@@ -1,0 +1,10 @@
+path: C:/Users/nourmedini/Desktop/TASI-ROBOT/Webots Robot Collecteur/dataset_webots
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: canette
+  1: bouteille
+  2: paper_cup
+  3: tissues
+  4: autre_objet
