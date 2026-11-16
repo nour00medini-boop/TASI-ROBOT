@@ -1,9 +1,9 @@
 train:
   - C:/Users/nourmedini/Desktop/TASI-ROBOT/dataset/images/train
-  - C:/Users/nourmedini/Desktop/TASI-ROBOT/Webots Robot Collecteur/dataset_webots/images/train
+  - C:/Users/nourmedini/Desktop/TASI-ROBOT/Webots_Robot_Collecteur/dataset_webots/images/train
 val:
   - C:/Users/nourmedini/Desktop/TASI-ROBOT/dataset/images/val
-  - C:/Users/nourmedini/Desktop/TASI-ROBOT/Webots Robot Collecteur/dataset_webots/images/val
+  - C:/Users/nourmedini/Desktop/TASI-ROBOT/Webots_Robot_Collecteur/dataset_webots/images/val
 names:
   0: canette
   1: bouteille

@@ -5,5 +5,5 @@ runs/
 check/
 *.pt
 __pycache__/
-Webots Robot Collecteur/dataset_webots
-Webots Robot Collecteur/dataset_webots1
+archive/
+Webots_Robot_Collecteur/dataset_webots

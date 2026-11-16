@@ -1,4 +1,4 @@
-train: C:\Users\nourmedini\Desktop\TASI-ROBOT\Webots Robot Collecteur\dataset_webots\images\train   # exigé par YOLO même si non utilisé
-val:   C:\Users\nourmedini\Desktop\TASI-ROBOT\Webots Robot Collecteur\dataset_webots\images\val
-test:  C:\Users\nourmedini\Desktop\TASI-ROBOT\Webots Robot Collecteur\dataset_webots\images\test
+train: C:\Users\nourmedini\Desktop\TASI-ROBOT\Webots_Robot_Collecteur\dataset_webots\images\train   # exigé par YOLO même si non utilisé
+val:   C:\Users\nourmedini\Desktop\TASI-ROBOT\Webots_Robot_Collecteur\dataset_webots\images\val
+test:  C:\Users\nourmedini\Desktop\TASI-ROBOT\Webots_Robot_Collecteur\dataset_webots\images\test
 names: {0: canette, 1: bouteille, 2: paper_cup, 3: tissues, 4: autre_objet}
