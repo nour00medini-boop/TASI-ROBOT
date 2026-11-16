@@ -6,7 +6,7 @@ Verifie 3 choses :
   3) ce que la camera reconnait (noeud Recognition) et la distance lidar minimale.
 """
 import sys
-from controller import Robot
+from controllers import Robot
 
 robot = Robot()
 pas = int(robot.getBasicTimeStep())

@@ -1,6 +1,6 @@
 from pathlib import Path
 import numpy as np
-from controller import Robot
+from controllers import Robot
 from ultralytics import YOLO
 
 robot = Robot()
